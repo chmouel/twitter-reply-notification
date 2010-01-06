@@ -9,6 +9,7 @@ import os
 import ConfigParser
 import stat
 import sys
+import urllib2
 
 CONFIG_FILE = os.path.expanduser("~/.config/twitter-reply-notification/config.ini")
 CACHE_FILE = os.path.expanduser("~/.cache/twitter-reply-notification/cache")
@@ -97,8 +98,12 @@ def main():
         sys.exit(1)
         return
     config['last_seen_id'] = parse_last_seen_id()
+
+    try:
+        text, last_seen_id = get_replies(config)
+    except(urllib2.URLError):
+        return
     
-    text, last_seen_id = get_replies(config)
     if not text or not last_seen_id:
         return
 
