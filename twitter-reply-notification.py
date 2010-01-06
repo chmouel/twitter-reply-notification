@@ -23,9 +23,9 @@ def send_mail(config, text):
     p = os.popen("%s -t" % config['sendmail_location'], "w")
     p.write("From: %s\n" % config['mail_from'])
     p.write("To: %s\n" % config['mail_to'])
-    p.write("Subject: New Twits\n")
+    p.write("Subject: New Twit (%d)\n" % (len(text)))
     p.write("\n") # 
-    p.write(text)
+    p.write("\n".join(text))
     status = p.close()
     if status == 256:
         sys.exit(1)
@@ -107,8 +107,7 @@ def main():
         return
 
     open(CACHE_FILE, "w").write(str(last_seen_id))
-
-    send_mail(config, "\n".join(text))
+    send_mail(config, text)
     
 if __name__ == '__main__':
     main()
