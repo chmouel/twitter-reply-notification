@@ -72,7 +72,7 @@ def parse_config(config_file):
 def get_replies(config):
     ret = []
     api = twitter.Api(config['username'], config['password'])
-    replies = api.GetReplies()
+    replies = api.GetReplies(since_id=int(config['last_seen_id']))
     if not replies:
         return (None, None)
     last = replies[0].id
